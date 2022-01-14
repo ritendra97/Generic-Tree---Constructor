@@ -1,0 +1,72 @@
+// InterThread Communication
+
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Stack;
+
+class nNode{
+    int data;
+    ArrayList<nNode> children = new ArrayList<>();
+}
+public class Main9{
+
+    public static void zigzagTraversal(nNode node){
+
+        Stack<nNode> ms = new Stack<>();
+        ms.push(node);
+
+        Stack<nNode> cs = new Stack<>();
+        int level = 0;
+
+        while (ms.size()>0){
+
+            node = ms.pop();
+            System.out.print(node.data+" ");
+            if(level%2==1){
+
+                for(int i = 0;i<node.children.size();i++){
+                    nNode child = node.children.get(i);
+                    cs.push(child);
+                }
+
+            }else{
+
+                for(int i = node.children.size()-1;i>=0;i--){
+                    nNode child = node.children.get(i);
+                    cs.push(child);
+                }
+            }
+        }
+
+        if(ms.size()==0){
+            ms = cs;
+            cs = new Stack<>();
+            level++;
+            System.out.println();
+        }
+    }
+
+    public static void main(String[] args) throws InterruptedException {
+        int arr[] = {10,20,50,-1,60,-1,-1,30,70,-1,80,110,-1,120,-1,-1,90,-1,40,100,-1,-1,-1};
+
+        nNode root=null;
+        Stack<nNode> st =new Stack<>();
+        for(int i = 0;i<arr.length;i++){
+            if(arr[i]==-1){
+                st.pop();
+            }else{
+
+                nNode t= new nNode();
+                t.data = arr[i];
+                if(st.size()>0){
+                    st.peek().children.add(t);
+                }else{
+                    root = t;
+                }
+                st.push(t);
+            }
+        }
+        zigzagTraversal(root);
+    }
+}
