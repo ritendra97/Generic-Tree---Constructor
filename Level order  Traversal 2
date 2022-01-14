@@ -1,0 +1,56 @@
+// InterThread Communication
+
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Stack;
+
+class nNode{
+    int data;
+    ArrayList<nNode> children = new ArrayList<>();
+}
+public class Main9{
+
+    public static void levelTraversal2(nNode node){
+        Queue<nNode> q = new LinkedList<>();
+        q.add(node);
+        while (true){
+            if(q.size()==0) break;
+            int size = q.size();
+
+            while (size>0){
+                nNode n = q.remove();
+                System.out.print(n.data+" ");
+                for(nNode child: n.children){
+                    q.add(child);
+                }
+                size--;
+            }
+            System.out.println();
+        }
+
+    }
+
+    public static void main(String[] args) throws InterruptedException {
+        int arr[] = {10,20,50,-1,60,-1,-1,30,70,-1,80,110,-1,120,-1,-1,90,-1,40,100,-1,-1,-1};
+
+        nNode root=null;
+        Stack<nNode> st =new Stack<>();
+        for(int i = 0;i<arr.length;i++){
+            if(arr[i]==-1){
+                st.pop();
+            }else{
+
+                nNode t= new nNode();
+                t.data = arr[i];
+                if(st.size()>0){
+                    st.peek().children.add(t);
+                }else{
+                    root = t;
+                }
+                st.push(t);
+            }
+        }
+        levelTraversal2(root);
+    }
+}
